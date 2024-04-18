@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Registration Form</title>
+  <link rel="stylesheet" href="style.css" />
+  <script>
+    function validateForm(event) {
+      event.preventDefault();
+
+      var fullName = document.getElementById('full-name').value;
+      var email = document.getElementById('email').value;
+      var phoneNumber = document.getElementById('phone-number').value;
+      var birthDate = document.getElementById('birth-date').value;
+      var address = document.getElementById('address').value;
+      var city = document.getElementById('city').value;
+      var region = document.getElementById('region').value;
+      var pinCode = document.getElementById('pin-code').value;
+      var gender = document.querySelector('input[name="gender"]:checked').value;
+
+    
+      var emailFormat = /^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/;
+
+      if (fullName === "") {
+        alert("Please fill the Fullname.");
+        return false;
+      } else if (email === "") {
+        alert("Please fill the E-mail.");
+        return false;
+      } else if (!email.match(emailFormat)) {
+        alert("Please enter a valid email address.");
+        return false;
+      } else if (phoneNumber === "") {
+        alert("Please fill the Phonenumber.");
+        return false;
+      } else if (phoneNumber.length !== 10 || isNaN(phoneNumber)) {
+        alert("Please enter a valid 10-digit phone number.");
+        return false;
+      } else if (birthDate === "") {
+        alert("Please fill the Birth Date.");
+        return false;
+      } else if (address === "") {
+        alert("Please fill the Address.");
+        return false;
+      } else if (city === "") {
+        alert("Please fill the City.");
+        return false;
+      } else if (region === "") {
+        alert("Please fill the Region.");
+        return false;
+      } else if (pinCode === "") {
+        alert("Please fill the Pin Code.");
+        return false;
+      }
+
+      var displayInfo = document.getElementById("display-info");
+      displayInfo.style.display = "block";
+      displayInfo.innerHTML = `
+        <h2>Submitted Information:</h2>
+        <p><strong>Full Name:</strong> ${fullName}</p>
+        <p><strong>Email Address:</strong> ${email}</p>
+        <p><strong>Phone Number:</strong> ${phoneNumber}</p>
+        <p><strong>Birth Date:</strong> ${birthDate}</p>
+        <p><strong>Gender:</strong> ${gender}</p>
+        <p><strong>Address:</strong> ${address}</p>
+        <p><strong>City:</strong> ${city}</p>
+        <p><strong>Region:</strong> ${region}</p>
+        <p><strong>Pin Code:</strong> ${pinCode}</p>
+      `;
+
+      return true;
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      
+      var formInputs = document.querySelectorAll('form input, form textarea, form select');
+
+      formInputs.forEach((input, index) => {
+        input.addEventListener('focus', function () {
+          var prevInput = formInputs[index - 1];
+          if (prevInput && prevInput.value.trim() === '') {
+            var fieldName = prevInput.getAttribute('placeholder') || prevInput.getAttribute('name');
+            alert("Please fill out the " + fieldName + " field first");
+            prevInput.focus();
+          } else if (prevInput && prevInput.getAttribute('id') === 'phone-number') {
+            var phoneNumber = prevInput.value;
+            var phoneRegex = /^\d{10}$/;
+            if (!phoneNumber.match(phoneRegex)) {
+              alert("Please enter a valid 10-digit phone number before moving to the next section.");
+              prevInput.focus();
+            }
+          }
+        });
+      });
+    });
+  </script>
+</head>
+<body>
+<section class="container">
+  <header>Registration Form</header>
+  <form action="#" class="form" onsubmit="return validateForm(event)">
+
+    <div class="input-box">
+      <label>Full Name</label>
+      <input type="text" id="full-name" placeholder="Enter full name" />
+    </div>
+
+    <div class="input-box">
+      <label>Email Address</label>
+      <input type="text" id="email" placeholder="Enter email address" />
+    </div>
+
+    <div class="column">
+      <div class="input-box">
+        <label>Phone Number</label>
+        <input type="text" id="phone-number" placeholder="Enter phone number" />
+      </div>
+
+      <div class="input-box">
+        <label>Birth Date</label>
+        <input type="date" id="birth-date" placeholder="Enter birth date" />
+      </div>
+    </div>
+
+    <div class="gender-box">
+      <h3>Gender</h3>
+      <div class="gender-option">
+        <div class="gender">
+          <input type="radio" id="check-male" name="gender" value="Male" checked />
+          <label for="check-male">Male</label>
+        </div>
+
+        <div class="gender">
+          <input type="radio" id="check-female" name="gender" value="Female" />
+          <label for="check-female">Female</label>
+        </div>
+
+        <div class="gender">
+          <input type="radio" id="check-other" name="gender" value="Others" />
+          <label for="check-other">Others</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-box address">
+      <label>Address</label>
+      <input type="text" id="address" placeholder="Enter street address" />
+      <input type="text" id="address-line2" placeholder="Enter street address line 2" />
+      <div class="column">
+        <div class="select-box">
+          <select id="country">
+            <option hidden>Country</option>
+            <option>America</option>
+            <option>Japan</option>
+            <option>India</option>
+            <option>Nepal</option>
+          </select>
+        </div>
+        <input type="text" id="city" placeholder="Enter your city" />
+      </div>
+
+      <div class="column">
+        <input type="text" id="region" placeholder="Enter your region" />
+        <input type="text" id="pin-code" placeholder="Enter pin code" />
+      </div>
+    </div>
+    <button type="submit">Submit</button>
+  </form>
+  <section id="display-info"></section>
+</section>
+</body>
+</html>
